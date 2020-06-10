@@ -38,7 +38,7 @@ def posts():
 
 
 @app.route('/<string:pnf>')
-def otherwise(pn):
+def otherwise(pnf):
     return render_template('page_not_found.html', page_name=pnf)
 
 
