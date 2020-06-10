@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<title> Text Obfuscator </title>
+<script type="text/javascript">
+
+    function obfuscate_text(input_txt) {
+        
+        var obfuscated_text = "";
+
+        const rb_default = document.querySelector('input[name="using_charsets"][value="default"]');
+        const rb_custom = document.querySelector('input[name="using_charsets"][value="custom"]');
+
+        if (rb_custom.checked) {
+            const confusables = JSON.parse('{{ confusables|tojson|safe }}');
+            const charset_selectors = document.querySelectorAll('input[name="charset_selector"]:checked');
+            var alph = {};
+            for (const chr_sel of charset_selectors) {
+                for (var key in confusables[chr_sel.id]) {
+                    // check if the property/key is defined in the object itself, not in parent
+                    if (confusables[chr_sel.id].hasOwnProperty(key)) {           
+                        alph[key] = String.fromCharCode(confusables[chr_sel.id][key]);
+                    }
+                }
+            }
+        } else {
+            var alph = JSON.parse('{{ default_alph|tojson|safe }}');
+            var keys = Object.keys(alph);
+        }
+        for (const s of input_txt) {
+            if (alph[s] === undefined){
+                obfuscated_text += s;
+            } else {
+                obfuscated_text += alph[s];
+            }
+        }
+        document.getElementById("obfuscated_text").innerHTML = obfuscated_text;
+    }
+
+    function copyToClipboard(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($(element).text()).select();
+        document.execCommand("copy");
+        $temp.remove();
+    }
+    
+    var button = document.getElementById('hideshowoptions');
+    button.onclick = function() {
+    var div = document.getElementById('options');
+    if (div.style.display !== 'none') {
+        div.style.display = 'none';
+    }
+    else {
+        div.style.display = 'block';
+    }
+};
+</script>
+{% endblock %}
+
+{% block body %}
+
+<h1> Text Obfuscator </h1>
+
+<h2> About: </h2>
+<p> This script changes text into alternative unicode characters which look similar to the original text.  This may or may not work to confuse robots, and is meant not to confuse humans. The default mode changes all upper and lowercase english letters into similar looking letters from greek, cyrillic, and other alphabets. </p>
+
+<h2> Possible issues: </h2>
+<p> If some fonts are not installed, some characters may not display properly. <div style="display: none"> The options other than the default are not currently fully supported. </div></p><br>
+
+<div class="container">
+    <div class="col  align-self-left">
+        <div class="row">
+            Input:
+        </div><br>
+        <div class="row">
+            <input id="input_text" type="text" onchange="obfuscate_text(this.value);" onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+        </div>
+
+        <br><br>
+        <div class="row">
+            Obfuscated Text:
+        </div><br>
+
+        <div class="row">
+            <text id="obfuscated_text"> </text> <button onclick="copyToClipboard('#obfuscated_text')"> Copy </button>
+        </div>
+    </div>
+</div>
+<br>
+
+<div style="display: none">
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#options" aria-expanded="false" aria-controls="options">
+    Show / Hide Options
+  </button>
+
+<div class="collapse" id="options">
+    <h2> Options: </h2>
+
+    <div id="options_checkboxes">
+        <form>
+            <label>Character sets:</label><br>
+
+            <div name="radio_buttons">
+                <input type="radio" name="using_charsets" value="default" checked> Default (A combination of letters from various alphabets selected to look mostly normal and provide minimal errors) <br>
+                <input type="radio" name="using_charsets" value="custom"> Custom <br>
+            </div>
+            <ul>
+                {% for key in confusables.keys() %}
+                    {% if key != "other" %}
+                <li><input name="charset_selector" id={{ key }} type="checkbox"> {{ key }} </li>
+                    {% endif %}
+                {% endfor %}
+                <li><input name="charset_selector" id={{ "other" }} type="checkbox"> {{ "other" }} </li>
+            </ul>
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<title> Page not found </title>
+{% endblock %}
+
+{% block body %}
+
+
+{% if page_name is defined %}
+    {{ page_name }} is not a valid page! It may be under construction, or you may have typed an invalid URL.
+{% else %}
+    Hello! I don't know where you came from but this URL is not valid.
+{% endif %}
+
+{% endblock %}
