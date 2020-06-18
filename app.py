@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from static.confusables import confusables, confusables2
 
-app=Flask(__name__)
+app=Flask(__name__, subdomain_matching=True)
 some_dict = {}
 
 class Navbar_Item:
@@ -31,8 +31,8 @@ def obfs():
     return render_template('obfuscate.html',confusables=confusables, default_alph=default_alph, list_of_keys=list_of_keys)
 
 
-@app.route('/test')
-def posts():
+@app.route('/',subdomain='xyz')
+def test_page():
     return render_template('display_info.html',info = some_dict)
 
 
@@ -43,4 +43,4 @@ def otherwise(pnf):
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
