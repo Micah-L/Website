@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect
+import os
+from flask import Flask, render_template, request, redirect, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from static.confusables import confusables, confusables2
 from static.wordlist import wordlist
@@ -40,7 +41,10 @@ def hashpass():
 def test_page():
     return render_template('display_info.html',info = some_dict)
 
-
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/<string:pnf>')
 def otherwise(pnf):
