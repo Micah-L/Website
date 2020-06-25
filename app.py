@@ -1,8 +1,8 @@
 import os
 from flask import Flask, render_template, request, redirect, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
-from static.confusables import confusables, confusables2
-from static.wordlist import wordlist
+#from static.confusables import confusables, confusables2
+#from static.wordlist import wordlist
 
 app=Flask(__name__, subdomain_matching=True)
 
@@ -11,8 +11,8 @@ class Navbar_Item:
 class Navbar:
     pass
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test_db.db'
-db = SQLAlchemy(app)
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test_db.db'
+#db = SQLAlchemy(app)
 
 
 @app.route('/', methods=['GET'])
