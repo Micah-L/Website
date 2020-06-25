@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from static.confusables import confusables, confusables2
+from static.wordlist import wordlist
 
 app=Flask(__name__, subdomain_matching=True)
-some_dict = {}
 
 class Navbar_Item:
     pass
@@ -28,8 +28,13 @@ def obfs():
         list_of_keys.extend(confusables[k].keys())
     list_of_keys = list(set(list_of_keys))
     list_of_keys.sort()
-    return render_template('obfuscate.html',confusables=confusables, default_alph=default_alph, list_of_keys=list_of_keys)
+    return render_template('obfuscate.html',confusables=confusables, default_alph=default_alph)
 
+
+@app.route('/hashpass')
+@app.route('/hp')
+def hashpass():
+    return render_template('hashpass.html')
 
 @app.route('/',subdomain='xyz')
 def test_page():
@@ -43,4 +48,4 @@ def otherwise(pnf):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
