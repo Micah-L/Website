@@ -7,24 +7,5 @@
 
 {% block body %}
 
-<h4>Here's a table: </h4>
-<table style="width:100%">
-    <tr>
-        {% for key in info %}
-        <th> {{ key }} </th>
-        {% endfor %}
-    </tr>
-    <tr>
-        {% for key in info %}
-        <td> {{ info[key] }} </td>
-        {% endfor %}
-    </tr>
-</table>
-
-Here's some other stuff:
-
-<text> &#120171; </text>
-
-
 
 {% endblock %}
