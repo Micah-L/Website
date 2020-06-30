@@ -390,18 +390,9 @@ function convertBase(digits, fromBase, toBase) {
 
 
 async function propagate_password(){
-    //document.getElementById("password_text").innerHTML = "button pushed";
-    
-    
-    //sha512_digest("hello").then(value => {document.getElementById("password_text").innerHTML = value;});
-    //document.getElementById("password_text").innerHTML = await sha512_digest("hello");
-    //document.getElementById("password_text").innerHTML = await getPassword("1","2");
-    //let hash_key_txt = await sha512_digest(document.getElementById("key_text").value);
-    
+
     document.getElementById("password_text").innerHTML = await getPassword(document.getElementById("secret_text").value, document.getElementById("key_text").value, alphabet = my_alph);
     document.getElementById("passphrase_text").innerHTML = await getPassword(document.getElementById("secret_text").value, document.getElementById("key_text").value, alphabet = wordlist,length=default_passphrase_length);
-    
-    //document.getElementById("password_text").innerHTML = getPassword(document.getElementById("secret_text").value, document.getElementById("key_text").value,); //
 }
 
 
@@ -427,8 +418,6 @@ async function propagate_password(){
         <div class="row">
             <input id="key_text" type="text" onchange="propagate_password();" onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" value=""/>
         </div>
-        <br><br>
-        <button onclick="propagate_password();"> Propagate Password </button>
         <br><br>
         <div class="row">
             Password:
