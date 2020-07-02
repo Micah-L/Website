@@ -7,6 +7,14 @@
 var wordlist = {{ wordlist|list|safe }};
 
 
+function copy_to_clipboard(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($(element).text()).select();
+        document.execCommand("copy");
+        $temp.remove();
+    }
+
 function SHA512(str) {
  function int64(msint_32, lsint_32) {
  this.highOrder = msint_32;
@@ -279,13 +287,7 @@ const my_alph = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!
 const default_passlength = 16;
 const default_passphrase_length = 5;
 
-function copy_to_clipboard(element) {
-        var $temp = $("<input>");
-        $("body").append($temp);
-        $temp.val($(element).text()).select();
-        document.execCommand("copy");
-        $temp.remove();
-    }
+
 
 async function getPassword(secret, key, alphabet=my_alph, length=default_passlength, capitalize = false) {
 	if (typeof alphabet === 'string')
@@ -391,8 +393,8 @@ function convertBase(digits, fromBase, toBase) {
 
 async function propagate_password(){
 
-    document.getElementById("password_text").innerHTML = await getPassword(document.getElementById("secret_text").value, document.getElementById("key_text").value, alphabet = my_alph);
-    document.getElementById("passphrase_text").innerHTML = await getPassword(document.getElementById("secret_text").value, document.getElementById("key_text").value, alphabet = wordlist,length=default_passphrase_length);
+    document.getElementById("password_text").innerHTML = await getPassword(document.getElementById("secret_text").value, document.getElementById("key_text").value, alphabet = my_alph, length=document.getElementById("pw_len").value);
+    document.getElementById("passphrase_text").innerHTML = await getPassword(document.getElementById("secret_text").value, document.getElementById("key_text").value, alphabet = wordlist,length=document.getElementById("pf_len").value);
 }
 
 
@@ -430,6 +432,40 @@ async function propagate_password(){
         </div>
     </div>
 </div>
+<br>
+<h1> Options </h1>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col align-self-left">
+            <p> Password length: </p>
+        </div>
+        <div class="col align-self-left">
+            <input id="pw_len" onchange="propagate_password();" onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"  value="16"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col align-self-left">
+            <p> Passphrase length: </p>
+        </div>
+        <div class="col align-self-left">
+            <input id="pf_len" onchange="propagate_password();" onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"  value="5"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col align-self-left">
+        </div>
+        <div class="col align-self-left">
+        </div>
+    </div>        
+</div>
+
+
+<script>
+document.getElementById("pw_len").value = default_passlength;
+document.getElementById("pf_len").value = default_passphrase_length;
+</script>
+
 <br>
 <h1> About </h1>
 <h2> How to use this tool </h2>

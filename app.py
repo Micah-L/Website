@@ -16,7 +16,7 @@ class Navbar:
 
 
 @app.route('/', methods=['GET'])
-def main():
+def main():     
     return render_template('index.html')
 
 @app.route('/obfuscate')
