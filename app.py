@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template, request, redirect, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from static.confusables import confusables, confusables2
-#from static.wordlist import wordlist
+from static.wordlist import wordlist
 
 app=Flask(__name__, subdomain_matching=True)
 
@@ -29,12 +29,12 @@ def obfs():
         list_of_keys.extend(confusables[k].keys())
     list_of_keys = list(set(list_of_keys))
     list_of_keys.sort()
-    return render_template('obfuscate.html',confusables=confusables, default_alph=default_alph)
+    return render_template('obfuscate.html', confusables=confusables, default_alph=default_alph)
 
 @app.route('/hashpass')
 @app.route('/hp')
 def hashpass():
-    return render_template('hashpass.html')
+    return render_template('hashpass.html', wordlist=wordlist)
 
 @app.route('/favicon.ico')
 def favicon():
