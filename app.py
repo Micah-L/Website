@@ -3,10 +3,10 @@ from flask import Flask, render_template, request, redirect, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from static.confusables import confusables, confusables2
 from static.wordlist import wordlist
-from flask_talisman import Talisman
+#from flask_talisman import Talisman
 
 app=Flask(__name__, subdomain_matching=True)
-Talisman(app)
+#Talisman(app)
 
 class Navbar_Item:
     pass
